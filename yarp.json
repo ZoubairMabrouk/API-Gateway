@@ -1,0 +1,60 @@
+{
+  "ReverseProxy": {
+    "Routes": {
+      "auth-route": {
+        "ClusterId": "auth-cluster",
+        "Match": {
+          "Path": "/auth/{**catch-all}"
+        }
+      },
+      "chat-route": {
+        "ClusterId": "chat-cluster",
+        "Match": {
+          "Path": "/chat/{**catch-all}"
+        }
+      },
+      "mdx-route": {
+        "ClusterId": "mdx-cluster",
+        "Match": {
+          "Path": "/mdx/{**catch-all}"
+        }
+      },
+      "etl-route": {
+        "ClusterId": "etl-cluster",
+        "Match": {
+          "Path": "/etl/{**catch-all}"
+        }
+      }
+    },
+    "Clusters": {
+      "auth-cluster": {
+        "Destinations": {
+          "auth1": {
+            "Address": "http://auth-service:8080/"
+          }
+        }
+      },
+      "chat-cluster": {
+        "Destinations": {
+          "chat1": {
+            "Address": "http://chatbot-service:8080/"
+          }
+        }
+      },
+      "mdx-cluster": {
+        "Destinations": {
+          "mdx1": {
+            "Address": "http://mdx-service:8080/"
+          }
+        }
+      },
+      "etl-cluster": {
+        "Destinations": {
+          "etl1": {
+            "Address": "http://etl-service:8080/"
+          }
+        }
+      }
+    }
+  }
+}
