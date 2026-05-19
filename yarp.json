@@ -69,7 +69,7 @@
       "auth-cluster": {
         "Destinations": {
           "auth1": {
-            "Address": "http://auth-service:8084/"
+            "Address": "http://51.68.44.166:8084/"
           }
         }
       },
