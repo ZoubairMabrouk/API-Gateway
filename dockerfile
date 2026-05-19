@@ -9,4 +9,4 @@ RUN dotnet publish -c Release -o /app
 FROM runtime
 WORKDIR /app
 COPY --from=build /app .
-ENTRYPOINT ["dotnet", "ApiGateway.dll"]
+ENTRYPOINT ["dotnet", "API-Gateway.dll"]

@@ -119,7 +119,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ghcr.io/${{ github.repository_owner }}/${{ env.DOCKER_IMAGE }}
+          images: ghcr.io/zoubairmabrouk/${{ env.DOCKER_IMAGE }}
           tags: |
             type=raw,value=latest
             type=raw,value=${{ steps.version.outputs.version }}
@@ -137,7 +137,7 @@ jobs:
       - name: 🔒 Scan de sécurité Trivy (vulnérabilités)
         uses: aquasecurity/trivy-action@master
         with:
-          image-ref: ghcr.io/${{ github.repository_owner }}/${{ env.DOCKER_IMAGE }}:latest
+          image-ref: ghcr.io/zoubairmabrouk/${{ env.DOCKER_IMAGE }}:latest
           format: 'table'
           exit-code: '0'
           ignore-unfixed: true
@@ -179,7 +179,7 @@ jobs:
             ## Changes in this Release
             - API Gateway image published
             - See commit history for details
-            - Docker image: `ghcr.io/${{ github.repository_owner }}/${{ env.DOCKER_IMAGE }}:${{ steps.version.outputs.version }}`
+            - Docker image: `ghcr.io/zoubairmabrouk/${{ env.DOCKER_IMAGE }}:${{ steps.version.outputs.version }}`
           draft: false
           prerelease: false
         env:
@@ -217,7 +217,7 @@ jobs:
             echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
             echo "Pulling latest image"
-            docker pull ghcr.io/${{ github.repository_owner }}/${{ env.DOCKER_IMAGE }}:latest
+            docker pull ghcr.io/zoubairmabrouk/${{ env.DOCKER_IMAGE }}:latest
 
             echo "Stopping existing container if present"
             docker rm -f api-gateway || true
@@ -228,7 +228,7 @@ jobs:
               --restart unless-stopped \
               -p 8080:8080 \
               -e "ASPNETCORE_ENVIRONMENT=Production" \
-              ghcr.io/${{ github.repository_owner }}/${{ env.DOCKER_IMAGE }}:latest
+              ghcr.io/zoubairmabrouk/${{ env.DOCKER_IMAGE }}:latest
 
             echo "Deployment completed successfully"
             docker ps --filter "name=api-gateway"

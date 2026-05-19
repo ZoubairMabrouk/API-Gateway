@@ -3,31 +3,9 @@ version: '3.9'
 services:
 
   gateway:
-    build: ./ApiGateway
+    build:
+      context: .
+      dockerfile: ./dockerfile
     ports:
-      - "5000:8080"
-    depends_on:
-      - auth-service
-      - chatbot-service
-      - mdx-service
-      - etl-service
+      - "8080:8080"
 
-  auth-service:
-    image: auth-service
-    ports:
-      - "5001:8080"
-
-  chatbot-service:
-    image: chatbot-service
-    ports:
-      - "5002:8080"
-
-  mdx-service:
-    image: mdx-service
-    ports:
-      - "5003:8080"
-
-  etl-service:
-    image: etl-service
-    ports:
-      - "5004:8080"
