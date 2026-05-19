@@ -1,29 +1,68 @@
 {
+  "JwtSettings": {
+    "Issuer": "AUTH-service",
+    "Audience": "platform-services",
+    "Key": "qsjhdhqsdhhuzhdhdgeudgudsgv,nfkuhzgezfuvjhknfjhsdbgvsqjhvvudsdfhvfuzbhjdqsjbddahugfu"
+  },
+
+  "AllowedOrigins": [
+    "https://business-pulse-two.vercel.app"
+  ],
+
   "ReverseProxy": {
     "Routes": {
       "auth-route": {
         "ClusterId": "auth-cluster",
         "Match": {
-          "Path": "/auth/{**catch-all}"
-        }
+          "Path": "/auth/{**catch-all}",
+          "Methods": [ "GET", "POST", "OPTIONS" ]
+        },
+        "Transforms": [
+          { "PathRemovePrefix": "/auth" },
+          { "RequestHeader": "X-Forwarded-Prefix", "Set": "/auth" },
+          { "RequestHeader": "X-Gateway-Version", "Set": "1.0" },
+          { "ResponseHeader": "X-Frame-Options", "Set": "DENY" },
+          { "ResponseHeader": "X-Content-Type-Options", "Set": "nosniff" }
+        ]
       },
       "chat-route": {
         "ClusterId": "chat-cluster",
         "Match": {
-          "Path": "/chat/{**catch-all}"
-        }
+          "Path": "/chat/{**catch-all}",
+          "Methods": [ "GET", "POST", "DELETE", "OPTIONS" ]
+        },
+        "Transforms": [
+          { "PathRemovePrefix": "/chat" },
+          { "RequestHeader": "X-Forwarded-Prefix", "Set": "/chat" },
+          { "ResponseHeader": "X-Frame-Options", "Set": "DENY" },
+          { "ResponseHeader": "X-Content-Type-Options", "Set": "nosniff" }
+        ]
       },
       "mdx-route": {
         "ClusterId": "mdx-cluster",
         "Match": {
-          "Path": "/mdx/{**catch-all}"
-        }
+          "Path": "/mdx/{**catch-all}",
+          "Methods": [ "GET", "POST", "OPTIONS" ]
+        },
+        "Transforms": [
+          { "PathRemovePrefix": "/mdx" },
+          { "RequestHeader": "X-Forwarded-Prefix", "Set": "/mdx" },
+          { "ResponseHeader": "X-Frame-Options", "Set": "DENY" },
+          { "ResponseHeader": "X-Content-Type-Options", "Set": "nosniff" }
+        ]
       },
       "etl-route": {
         "ClusterId": "etl-cluster",
         "Match": {
-          "Path": "/etl/{**catch-all}"
-        }
+          "Path": "/etl/{**catch-all}",
+          "Methods": [ "POST", "PUT", "OPTIONS" ]
+        },
+        "Transforms": [
+          { "PathRemovePrefix": "/etl" },
+          { "RequestHeader": "X-Forwarded-Prefix", "Set": "/etl" },
+          { "ResponseHeader": "X-Frame-Options", "Set": "DENY" },
+          { "ResponseHeader": "X-Content-Type-Options", "Set": "nosniff" }
+        ]
       }
     },
     "Clusters": {
