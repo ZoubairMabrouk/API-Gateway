@@ -24,9 +24,9 @@ services:
       retries: 5
       start_period: 10s
     networks:
-      - gateway-net
+      - platform-network
 
 networks:
-  gateway-net:
+  platform-network:
     driver: bridge
 
