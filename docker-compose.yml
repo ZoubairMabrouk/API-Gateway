@@ -9,7 +9,7 @@ services:
         BUILD_DATE: ${BUILD_DATE:-}
         VCS_REF: ${VCS_REF:-}
         VERSION: ${VERSION:-}
-    image: api-gateway:${VERSION:-latest}
+    image: ghcr.io/zoubairmabrouk/api-gateway:${VERSION:-latest}
     container_name: api-gateway
     ports:
       - "8080:8080"
