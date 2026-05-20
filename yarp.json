@@ -18,7 +18,6 @@
           "Methods": [ "GET", "POST", "OPTIONS" ]
         },
         "Transforms": [
-          { "PathRemovePrefix": "/api/auth" },
           { "RequestHeader": "X-Forwarded-Prefix", "Set": "/api/auth" },
           { "RequestHeader": "X-Gateway-Version", "Set": "1.0" },
           { "ResponseHeader": "X-Frame-Options", "Set": "DENY" },
@@ -32,7 +31,6 @@
           "Methods": [ "GET", "POST", "DELETE", "OPTIONS" ]
         },
         "Transforms": [
-          { "PathRemovePrefix": "/api/chat" },
           { "RequestHeader": "X-Forwarded-Prefix", "Set": "/api/chat" },
           { "ResponseHeader": "X-Frame-Options", "Set": "DENY" },
           { "ResponseHeader": "X-Content-Type-Options", "Set": "nosniff" }
@@ -45,7 +43,6 @@
           "Methods": [ "GET", "POST", "OPTIONS" ]
         },
         "Transforms": [
-          { "PathRemovePrefix": "/api/mdx" },
           { "RequestHeader": "X-Forwarded-Prefix", "Set": "/api/mdx" },
           { "ResponseHeader": "X-Frame-Options", "Set": "DENY" },
           { "ResponseHeader": "X-Content-Type-Options", "Set": "nosniff" }
@@ -58,7 +55,6 @@
           "Methods": [ "POST", "PUT", "OPTIONS" ]
         },
         "Transforms": [
-          { "PathRemovePrefix": "/api/etl" },
           { "RequestHeader": "X-Forwarded-Prefix", "Set": "/api/etl" },
           { "ResponseHeader": "X-Frame-Options", "Set": "DENY" },
           { "ResponseHeader": "X-Content-Type-Options", "Set": "nosniff" }
