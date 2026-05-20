@@ -6,7 +6,8 @@
   },
 
   "AllowedOrigins": [
-    "https://business-pulse-two.vercel.app"
+    "https://business-pulse-two.vercel.app",
+    "*"
   ],
 
   "ReverseProxy": {
