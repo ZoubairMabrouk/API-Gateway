@@ -10,85 +10,106 @@
     "*"
   ],
 
-  "ReverseProxy": {
+"ReverseProxy": {
     "Routes": {
-      "auth-route": {
+
+      "auth-public": {
         "ClusterId": "auth-cluster",
+        "AuthorizationPolicy": "anonymous",
         "Match": {
-          "Path": "/api/auth/{**catch-all}",
-          "Methods": [ "GET", "POST", "OPTIONS" ]
+          "Path": "/api/auth/{**catch-all}"
         },
         "Transforms": [
-          { "RequestHeader": "X-Forwarded-Prefix", "Set": "/api/auth" },
-          { "RequestHeader": "X-Gateway-Version", "Set": "1.0" },
-          { "ResponseHeader": "X-Frame-Options", "Set": "DENY" },
-          { "ResponseHeader": "X-Content-Type-Options", "Set": "nosniff" }
+          { "RequestHeaderOriginalHost": "false" },
+          { "X-Forwarded": "Set" }
         ]
       },
-      "chat-route": {
-        "ClusterId": "chat-cluster",
+
+      "user-me": {
+        "ClusterId": "auth-cluster",
+        "AuthorizationPolicy": "authenticated",
         "Match": {
-          "Path": "/api/chat/{**catch-all}",
-          "Methods": [ "GET", "POST", "DELETE", "OPTIONS" ]
+          "Path": "/api/user/{**catch-all}"
         },
         "Transforms": [
-          { "RequestHeader": "X-Forwarded-Prefix", "Set": "/api/chat" },
-          { "ResponseHeader": "X-Frame-Options", "Set": "DENY" },
-          { "ResponseHeader": "X-Content-Type-Options", "Set": "nosniff" }
+          { "RequestHeaderOriginalHost": "false" },
+          { "X-Forwarded": "Set" }
         ]
       },
-      "mdx-route": {
+
+      "admin-users": {
+        "ClusterId": "auth-cluster",
+        "AuthorizationPolicy": "admin-only",
+        "Match": {
+          "Path": "/api/users/{**catch-all}"
+        },
+        "Transforms": [
+          { "RequestHeaderOriginalHost": "false" },
+          { "X-Forwarded": "Set" }
+        ]
+      },
+
+      "mdx-clients": {
         "ClusterId": "mdx-cluster",
+        "AuthorizationPolicy": "authenticated",
         "Match": {
-          "Path": "/api/mdx/{**catch-all}",
-          "Methods": [ "GET", "POST", "OPTIONS" ]
+          "Path": "/api/clients/{**catch-all}"
         },
         "Transforms": [
-          { "RequestHeader": "X-Forwarded-Prefix", "Set": "/api/mdx" },
-          { "ResponseHeader": "X-Frame-Options", "Set": "DENY" },
-          { "ResponseHeader": "X-Content-Type-Options", "Set": "nosniff" }
+          { "RequestHeaderOriginalHost": "false" },
+          { "X-Forwarded": "Set" }
         ]
       },
-      "etl-route": {
-        "ClusterId": "etl-cluster",
+
+      "ai-ask": {
+        "ClusterId": "ai-cluster",
+        "AuthorizationPolicy": "authenticated",
         "Match": {
-          "Path": "/api/etl/{**catch-all}",
-          "Methods": [ "POST", "PUT", "OPTIONS" ]
+          "Path": "/ask",
+          "Methods": ["POST"]
         },
         "Transforms": [
-          { "RequestHeader": "X-Forwarded-Prefix", "Set": "/api/etl" },
-          { "ResponseHeader": "X-Frame-Options", "Set": "DENY" },
-          { "ResponseHeader": "X-Content-Type-Options", "Set": "nosniff" }
+          { "RequestHeaderOriginalHost": "false" },
+          { "X-Forwarded": "Set" }
         ]
       }
     },
+
     "Clusters": {
       "auth-cluster": {
+        "LoadBalancingPolicy": "RoundRobin",
         "Destinations": {
-          "auth1": {
-            "Address": "http://auth-service:8080/"
-          }
-        }
-      },
-      "chat-cluster": {
-        "Destinations": {
-          "chat1": {
-            "Address": "http://chatbot-service:8080/"
+          "primary": { "Address": "http://51.68.44.166:8084/" }
+        },
+        "HealthCheck": {
+          "Active": {
+            "Enabled": true,
+            "Interval": "00:00:10",
+            "Timeout": "00:00:05",
+            "Policy": "ConsecutiveFailures",
+            "Path": "/health"
           }
         }
       },
       "mdx-cluster": {
+        "LoadBalancingPolicy": "RoundRobin",
         "Destinations": {
-          "mdx1": {
-            "Address": "http://mdx-service:8080/"
+          "primary": { "Address": "http://51.68.44.166:8080/" }
+        },
+        "HealthCheck": {
+          "Active": {
+            "Enabled": true,
+            "Interval": "00:00:10",
+            "Timeout": "00:00:05",
+            "Policy": "ConsecutiveFailures",
+            "Path": "/health"
           }
         }
       },
-      "etl-cluster": {
+      "ai-cluster": {
+        "LoadBalancingPolicy": "RoundRobin",
         "Destinations": {
-          "etl1": {
-            "Address": "http://etl-service:8080/"
-          }
+          "primary": { "Address": "http://51.68.44.166:8000/" }
         }
       }
     }
